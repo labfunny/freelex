@@ -60,7 +60,7 @@ freelex/
 
 1. Клонуйте репозиторій:
 ```bash
-git clone https://github.com//freelex.git
+git clone https://github.com/labfunny/freelex.git
 ```
 
 2. Налаштуйте базу даних:
@@ -90,6 +90,6 @@ MIT License. Дивіться файл `LICENSE` для деталей.
 
 ## 👨‍💻 Автор
 
-Danil - [GitHub](https://github.com/)
+Danil - [GitHub](https://github.com/labfunny)
 
 ---
