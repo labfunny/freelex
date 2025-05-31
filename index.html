@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+  <meta charset="utf-8" />
+  <meta content="width=device-width, initial-scale=1" name="viewport" />
+  <title>Freelex</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600&display=swap" rel="stylesheet" />
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" rel="stylesheet" />
+  <link href="src/css/styles.css" rel="stylesheet" />
+</head>
+<body class="min-h-screen flex flex-col">
+  <header class="bg-white sticky top-0 z-30">
+    <div class="max-w-7xl mx-auto px-6 py-5 flex items-center justify-between">
+      <div class="flex items-center space-x-3">
+        <h1 class="text-3xl font-semibold tracking-tight">Freelex</h1>
+      </div>
+      <nav class="hidden md:flex items-center space-x-8 text-base font-semibold text-gray-700">
+        <button class="hover:text-black focus:outline-none focus:text-black transition" id="btnSessions" type="button">Сесії</button>
+        <button class="hover:text-black focus:outline-none focus:text-black transition" id="btnCreate" type="button">Створити сесію</button>
+        <button class="hover:text-black focus:outline-none focus:text-black transition" id="btnProfile" type="button">Профіль</button>
+        <div class="flex items-center space-x-6" id="authButtons">
+          <button class="hover:text-black focus:outline-none focus:text-black transition" id="btnLogin" type="button">Увійти</button>
+          <button class="hover:text-black focus:outline-none focus:text-black transition" id="btnRegister" type="button">Зареєструватися</button>
+        </div>
+        <div class="hidden relative" id="userMenu">
+          <button aria-expanded="false" aria-haspopup="true" class="flex items-center space-x-2 focus:outline-none focus:ring-2 focus:ring-black rounded-full" id="userMenuButton" type="button">
+            <span class="font-semibold text-black" id="userNameDisplay"></span>
+            <i class="fas fa-chevron-down text-gray-600"></i>
+          </button>
+          <div aria-label="User menu" class="hidden absolute right-0 mt-2 w-44 bg-white rounded-2xl shadow-lg ring-1 ring-black ring-opacity-5" id="userDropdown" role="menu" tabindex="-1">
+            <button class="block w-full text-left px-5 py-3 text-sm text-gray-700 hover:bg-gray-100 rounded-2xl" id="btnLogout" role="menuitem" tabindex="0" type="button">Вийти</button>
+          </div>
+        </div>
+      </nav>
+      <div class="md:hidden">
+        <button aria-label="Open menu" class="text-gray-700 hover:text-black focus:outline-none focus:text-black" id="mobileMenuBtn" type="button">
+          <i class="fas fa-bars fa-lg"></i>
+        </button>
+      </div>
+    </div>
+    <nav class="hidden bg-white border-t border-gray-200 md:hidden" id="mobileMenu">
+      <div class="px-6 py-4 space-y-3">
+        <button class="w-full text-left text-gray-700 hover:text-black font-semibold text-lg" id="mobileBtnSessions" type="button">Сесії</button>
+        <button class="w-full text-left text-gray-700 hover:text-black font-semibold text-lg" id="mobileBtnCreate" type="button">Створити сесію</button>
+        <button class="w-full text-left text-gray-700 hover:text-black font-semibold text-lg" id="mobileBtnProfile" type="button">Профіль</button>
+        <hr class="my-3" />
+        <div class="space-y-3" id="mobileAuthButtons">
+          <button class="w-full text-left text-gray-700 hover:text-black font-semibold text-lg" id="mobileBtnLogin" type="button">Увійти</button>
+          <button class="w-full text-left text-gray-700 hover:text-black font-semibold text-lg" id="mobileBtnRegister" type="button">Зареєструватися</button>
+        </div>
+        <div class="hidden" id="mobileUserMenu">
+          <p class="font-semibold text-gray-900 mb-3 text-lg" id="mobileUserNameDisplay"></p>
+          <button class="w-full text-left text-gray-700 hover:text-black font-semibold text-lg" id="mobileBtnLogout" type="button">Вийти</button>
+        </div>
+      </div>
+    </nav>
+  </header>
+  <main class="flex-grow max-w-7xl mx-auto px-6 py-10 w-full">
+    <section class="space-y-8" id="sessionsSection">
+      <h2 class="text-4xl font-semibold mb-6">Сесії</h2>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 scrollbar-thin overflow-y-auto max-h-[70vh] pr-3" id="sessionsList"></div>
+    </section>
+    <section class="hidden max-w-3xl mx-auto bg-white rounded-3xl shadow-md p-10" id="createSection">
+      <h2 class="text-4xl font-semibold mb-8 text-center">Створити нову сесію</h2>
+      <form class="space-y-8" id="createSessionForm" novalidate="">
+        <div>
+          <label class="block text-base font-semibold text-gray-700 mb-2" for="title">Назва</label>
+          <input class="w-full rounded-xl border border-gray-300 px-5 py-3 focus:outline-none focus:ring-2 focus:ring-black focus:border-black" id="title" name="title" placeholder="Наприклад: Ранкова сесія фокусування" required="" type="text" />
+        </div>
+        <div>
+          <label class="block text-base font-semibold text-gray-700 mb-2" for="description">Опис</label>
+          <textarea class="w-full rounded-xl border border-gray-300 px-5 py-3 focus:outline-none focus:ring-2 focus:ring-black focus:border-black" id="description" name="description" placeholder="Короткий опис сесії" rows="4"></textarea>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-8">
+          <div>
+            <label class="block text-base font-semibold text-gray-700 mb-2" for="start_time">Час початку</label>
+            <input class="w-full rounded-xl border border-gray-300 px-5 py-3 focus:outline-none focus:ring-2 focus:ring-black focus:border-black" id="start_time" name="start_time" required="" type="datetime-local" />
+          </div>
+          <div>
+            <label class="block text-base font-semibold text-gray-700 mb-2" for="end_time">Час завершення</label>
+            <input class="w-full rounded-xl border border-gray-300 px-5 py-3 focus:outline-none focus:ring-2 focus:ring-black focus:border-black" id="end_time" name="end_time" required="" type="datetime-local" />
+          </div>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-8">
+          <div>
+            <label class="block text-base font-semibold text-gray-700 mb-2" for="work_minutes">Хвилини роботи</label>
+            <input class="w-full rounded-xl border border-gray-300 px-5 py-3 focus:outline-none focus:ring-2 focus:ring-black focus:border-black" id="work_minutes" max="180" min="1" name="work_minutes" required="" type="number" value="25" />
+          </div>
+          <div>
+            <label class="block text-base font-semibold text-gray-700 mb-2" for="break_minutes">Хвилини перерви</label>
+            <input class="w-full rounded-xl border border-gray-300 px-5 py-3 focus:outline-none focus:ring-2 focus:ring-black focus:border-black" id="break_minutes" max="60" min="1" name="break_minutes" required="" type="number" value="5" />
+          </div>
+        </div>
+        <input id="editSessionId" name="editSessionId" type="hidden" value="" />
+        <button class="w-full bg-black text-white font-semibold py-4 rounded-full hover:bg-gray-900 transition" id="createOrEditBtn" type="submit">Створити сесію</button>
+        <button class="w-full bg-gray-500 text-white font-semibold py-4 rounded-full hover:bg-gray-700 transition mt-4 hidden" id="cancelEditBtn" type="button">Скасувати редагування</button>
+      </form>
+      <p class="mt-6 text-center text-base font-semibold" id="createMessage"></p>
+    </section>
+    <section class="hidden max-w-4xl mx-auto bg-white rounded-3xl shadow-md p-10" id="profileSection">
+      <h2 class="text-4xl font-semibold mb-8 text-center">Профіль користувача</h2>
+      <div class="space-y-8" id="profileContent"></div>
+    </section>
+    <section class="hidden max-w-4xl mx-auto bg-gradient-to-r from-purple-600 via-indigo-600 to-blue-600 rounded-3xl shadow-lg p-16 text-center text-white" id="welcomeSection">
+      <h2 class="text-6xl font-extrabold mb-6 drop-shadow-lg">Ласкаво просимо до Freelex</h2>
+      <p class="text-2xl max-w-4xl mx-auto mb-12 drop-shadow-md">Організуйте свій час фокусування за допомогою техніки Помодоро. Увійдіть або зареєструйтеся, щоб почати та підвищити свою продуктивність!</p>
+      <div class="welcome-buttons">
+        <button class="bg-white text-indigo-700" id="welcomeLoginBtn" type="button">
+          <i class="fas fa-sign-in-alt"></i>
+          <span>Увійти</span>
+        </button>
+        <button class="bg-indigo-700 bg-opacity-90 text-white" id="welcomeRegisterBtn" type="button">
+          <i class="fas fa-user-plus"></i>
+          <span>Зареєструватися</span>
+        </button>
+      </div>
+    </section>
+
+    <div aria-hidden="true" aria-labelledby="sessionModalTitle" aria-modal="true" class="fixed inset-0 bg-black bg-opacity-40 hidden items-center justify-center z-50" id="sessionModal" role="dialog">
+      <div class="bg-white rounded-3xl shadow-lg max-w-lg w-full p-10 relative max-h-[90vh] overflow-y-auto">
+        <h3 class="text-3xl font-semibold mb-6" id="sessionModalTitle">Session Details</h3>
+        <div id="sessionModalContent" class="space-y-6 text-gray-800"></div>
+        <button aria-label="Close session details modal" class="absolute top-6 right-6 text-gray-600 hover:text-black focus:outline-none" id="sessionModalClose" type="button">
+          <i class="fas fa-times fa-lg"></i>
+        </button>
+      </div>
+    </div>
+
+    <div aria-hidden="true" aria-labelledby="loginModalTitle" aria-modal="true" class="fixed inset-0 bg-black bg-opacity-40 hidden items-center justify-center z-40" id="loginModal" role="dialog">
+      <div class="bg-white rounded-3xl shadow-lg max-w-md w-full p-10 relative">
+        <h3 class="text-3xl font-semibold mb-8 text-center" id="loginModalTitle">Увійти</h3>
+        <form class="space-y-8" id="loginForm" novalidate="">
+          <div>
+            <label class="block text-base font-semibold text-gray-700 mb-2" for="loginEmail">Email</label>
+            <input autocomplete="email" class="w-full rounded-xl border border-gray-300 px-5 py-4 focus:outline-none focus:ring-2 focus:ring-black focus:border-black text-lg" id="loginEmail" name="loginEmail" placeholder="ви@приклад.com" required="" type="email" />
+          </div>
+          <div>
+            <label class="block text-base font-semibold text-gray-700 mb-2" for="loginPassword">Пароль</label>
+            <input autocomplete="current-password" class="w-full rounded-xl border border-gray-300 px-5 py-4 focus:outline-none focus:ring-2 focus:ring-black focus:border-black text-lg" id="loginPassword" name="loginPassword" placeholder="••••••••" required="" type="password" />
+          </div>
+          <p class="text-red-600 text-center text-base font-semibold" id="loginError"></p>
+          <button class="w-full bg-black text-white font-semibold py-4 rounded-full hover:bg-gray-900 transition text-lg" type="submit">Увійти</button>
+        </form>
+        <button aria-label="Close login modal" class="absolute top-6 right-6 text-gray-600 hover:text-black focus:outline-none" id="loginModalClose" type="button">
+          <i class="fas fa-times fa-lg"></i>
+        </button>
+      </div>
+    </div>
+    <div aria-hidden="true" aria-labelledby="registerModalTitle" aria-modal="true" class="fixed inset-0 bg-black bg-opacity-40 hidden items-center justify-center z-40" id="registerModal" role="dialog">
+      <div class="bg-white rounded-3xl shadow-lg max-w-md w-full p-10 relative">
+        <h3 class="text-3xl font-semibold mb-8 text-center" id="registerModalTitle">Зареєструватися</h3>
+        <form class="space-y-8" id="registerForm" novalidate="">
+          <div>
+            <label class="block text-base font-semibold text-gray-700 mb-2" for="registerName">Ім'я</label>
+            <input autocomplete="name" class="w-full rounded-xl border border-gray-300 px-5 py-4 focus:outline-none focus:ring-2 focus:ring-black focus:border-black text-lg" id="registerName" name="registerName" placeholder="Ваше повне ім'я" required="" type="text" />
+          </div>
+          <div>
+            <label class="block text-base font-semibold text-gray-700 mb-2" for="registerEmail">Email</label>
+            <input autocomplete="email" class="w-full rounded-xl border border-gray-300 px-5 py-4 focus:outline-none focus:ring-2 focus:ring-black focus:border-black text-lg" id="registerEmail" name="registerEmail" placeholder="ви@приклад.com" required="" type="email" />
+          </div>
+          <div>
+            <label class="block text-base font-semibold text-gray-700 mb-2" for="registerPassword">Пароль</label>
+            <input autocomplete="new-password" class="w-full rounded-xl border border-gray-300 px-5 py-4 focus:outline-none focus:ring-2 focus:ring-black focus:border-black text-lg" id="registerPassword" minlength="6" name="registerPassword" placeholder="••••••••" required="" type="password" />
+          </div>
+          <p class="text-red-600 text-center text-base font-semibold" id="registerError"></p>
+          <button class="w-full bg-black text-white font-semibold py-4 rounded-full hover:bg-gray-900 transition text-lg" type="submit">Зареєструватися</button>
+        </form>
+        <button aria-label="Close register modal" class="absolute top-6 right-6 text-gray-600 hover:text-black focus:outline-none" id="registerModalClose" type="button">
+          <i class="fas fa-times fa-lg"></i>
+        </button>
+      </div>
+    </div>
+  </main>
+  <footer class="bg-white border-t border-gray-200 py-8 text-center text-gray-500 text-base">© 2025 Freelex. Всі права захищені.</footer>
+  <script src="src/js/app.js"></script>
+</body>
+</html> 
